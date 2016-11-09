@@ -1,0 +1,84 @@
+apply plugin: 'jsonschema2pojo'
+
+dependencies {
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'javax.validation:validation-api:1.1.0.CR2'
+}
+
+def packageName = 'app.qvdev.com.flightstat.model'
+
+// Each configuration is set to the default value
+jsonSchema2Pojo {
+    // Whether to generate builder-style methods of the form withXxx(value) (that return this),
+    // alongside the standard, void-return setters.
+    generateBuilders = false
+
+    // Whether to use primitives (long, double, boolean) instead of wrapper types where possible
+    // when generating bean properties (has the side-effect of making those properties non-null).
+    usePrimitives = false
+
+    // Location of the JSON Schema file(s). This may refer to a single file or a directory of files.
+    //source = files("${sourceSets.main.output.resourcesDir}/json")
+    source = files("${project.rootDir}/schema")
+
+    // Target directory for generated Java source files. The plugin will ignore this value for Android projects and will generate the classes into a generated source folder for each build variant and add this directory to the
+    // java source set so the compiler will find and compile the newly generated source files.
+    // targetDirectory = file("${project.rootDir}/build/generated-sources/js2p")
+
+    // Package name used for generated Java classes (for types where a fully qualified name has not
+    // been supplied in the schema using the 'javaType' property).
+    targetPackage = packageName
+
+    // The characters that should be considered as word delimiters when creating Java Bean property
+    // names from JSON property names. If blank or not set, JSON properties will be considered to
+    // contain a single word when creating Java Bean property names.
+    propertyWordDelimiters = [] as char[]
+
+    // Whether to use the java type long (or Long) instead of int (or Integer) when representing the
+    // JSON Schema type 'integer'.
+    useLongIntegers = false
+
+    // Whether to use the java type double (or Double) instead of float (or Float) when representing
+    // the JSON Schema type 'number'.
+    useDoubleNumbers = true
+
+    // Whether to include hashCode and equals methods in generated Java types.
+    includeHashcodeAndEquals = true
+
+    // Whether to include a toString method in generated Java types.
+    includeToString = true
+
+    // The style of annotations to use in the generated Java types. Supported values:
+    //  - jackson (alias of jackson2)
+    //  - jackson2 (apply annotations from the Jackson 2.x library)
+    //  - jackson1 (apply annotations from the Jackson 1.x library)
+    //  - gson (apply annotations from the Gson library)
+    //  - moshi1 (apply annotations from the Moshi 1.x library)
+    //  - none (apply no annotations at all)
+    annotationStyle = 'gson'
+
+    // A fully qualified class name, referring to a custom annotator class that implements
+    // org.jsonschema2pojo.NoopAnnotator and will be used in addition to the one chosen
+    // by annotationStyle. If you want to use the custom annotator alone, set annotationStyle to none.
+    customAnnotator = 'org.jsonschema2pojo.NoopAnnotator'
+
+    // Whether to include JSR-303/349 annotations (for schema rules like minimum, maximum, etc) in
+    // generated Java types. Schema rules and the annotation they produce:
+    //  - maximum = @DecimalMax
+    //  - minimum = @DecimalMin
+    //  - minItems,maxItems = @Size
+    //  - minLength,maxLength = @Size
+    //  - pattern = @Pattern
+    //  - required = @NotNull
+    // Any Java fields which are an object or array of objects will be annotated with @Valid to
+    // support validation of an entire document tree.
+    includeJsr303Annotations = true
+
+    // The type of input documents that will be read. Supported values:
+    //  - jsonschema (schema documents, containing formal rules that describe the structure of json data)
+    //  - json (documents that represent an example of the kind of json data that the generated Java types
+    //          will be mapped to)
+    sourceType = 'json'
+}
