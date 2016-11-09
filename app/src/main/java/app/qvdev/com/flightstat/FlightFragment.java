@@ -15,11 +15,13 @@ import retrofit2.Response;
 
 public class FlightFragment extends BaseFragment {
 
+    private TextView mLogView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        TextView textView = (TextView) view.findViewById(R.id.section_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        mLogView = (TextView) view.findViewById(R.id.section_label);
+        mLogView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
         return view;
     }
@@ -28,12 +30,18 @@ public class FlightFragment extends BaseFragment {
         return R.layout.fragment_main;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getFlight();
+    }
+
     private void getFlight() {
         Call<Flight> call = mFoxService.getFlightStatus("KL1699", "2016-11-09");
         call.enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> flight, Response<Flight> response) {
-                Log.d(getClass().getSimpleName(), response.toString());
+                mLogView.setText(response.body().toString());
             }
 
             @Override
