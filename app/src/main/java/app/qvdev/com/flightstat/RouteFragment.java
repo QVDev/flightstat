@@ -113,14 +113,16 @@ public class RouteFragment extends BaseFragment implements View.OnClickListener 
         }
     }
 
-    private void getRoute() {
+    protected void getRoute() {
         if (isSearchPossible()) {
+            super.getRoute();
             Call<Flight> call = mFoxService.getRouteStatus(mChosenDeparture.toUpperCase(), mChosenDestination.toUpperCase());
             call.enqueue(new Callback<Flight>() {
                 @Override
                 public void onResponse(Call<Flight> flight, Response<Flight> response) {
                     if (response.isSuccessful()) {
                         mLogView.setText(response.body().toString());
+                        showFlights(response);
                     } else {
                         mLogView.setText(getString(R.string.response_error));
                     }

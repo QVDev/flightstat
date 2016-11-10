@@ -3,11 +3,19 @@ package app.qvdev.com.flightstat;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import app.qvdev.com.flightstat.model.Flight;
+import app.qvdev.com.flightstat.model.Flight_;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -20,6 +28,10 @@ public class BaseFragment extends Fragment {
     protected FoxService mFoxService;
 
     protected TextView mLogView;
+
+    private FlightsAdapter mFlightsAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private List<Flight_> mFlights = new ArrayList<>();
 
     public static BaseFragment newInstance(int sectionNumber) {
         BaseFragment fragment = getFragment(sectionNumber);
@@ -40,10 +52,39 @@ public class BaseFragment extends Fragment {
         }
     }
 
+    protected void getRoute() {
+        mFlights.clear();
+    }
+
+    protected void setFlightList(View view) {
+        RecyclerView mFlightList = (RecyclerView) view.findViewById(R.id.flights_list);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mFlightList.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mFlightList.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mFlightsAdapter = new FlightsAdapter(mFlights);
+        mFlightList.setAdapter(mFlightsAdapter);
+    }
+
+    protected void showFlights(Response<Flight> response) {
+        mFlights.addAll(response.body().getFlights());
+        mFlightsAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(getLayoutId(), container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
+
+        setFlightList(view);
+
+        return view;
     }
 
     @Override
