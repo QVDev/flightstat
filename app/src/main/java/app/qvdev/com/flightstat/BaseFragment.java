@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,6 +18,8 @@ public class BaseFragment extends Fragment {
 
     protected static final String ARG_SECTION_NUMBER = "section_number";
     protected FoxService mFoxService;
+
+    protected TextView mLogView;
 
     public static BaseFragment newInstance(int sectionNumber) {
         BaseFragment fragment = getFragment(sectionNumber);
@@ -65,5 +68,9 @@ public class BaseFragment extends Fragment {
      */
     protected int getLayoutId() {
         return R.layout.fragment_main;
+    }
+
+    protected void setLogView(View view) {
+        mLogView = (TextView) view.findViewById(R.id.section_label);
     }
 }

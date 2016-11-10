@@ -4,4 +4,11 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="specific_flight">Flight</string>
     <string name="airport_flights">Route</string>
+    <string name="response_error">Not a valid request, check date or flight number</string>
+    <string name="search">Search flight</string>
+    <string name="date_search">%1$d-%2$d-%3$d</string>
+    <string name="date_picker_error">Date is not set</string>
+    <string name="flight_picker_error">Flight number is not set</string>
+    <string name="departure_picker_error">Departure is not set</string>
+    <string name="destination_picker_error">Destination is not set</string>
 </resources>
