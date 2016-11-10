@@ -1,5 +1,6 @@
 package app.qvdev.com.flightstat;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,15 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        TextView mTextView;
+        TextView mFlightNumber;
+        TextView mAircraft;
+        TextView mRemainingFlightTime;
 
         ViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.info_text);
+            mFlightNumber = (TextView) v.findViewById(R.id.flight_number);
+            mAircraft = (TextView) v.findViewById(R.id.aircraft);
+            mRemainingFlightTime = (TextView) v.findViewById(R.id.remaining_flight_time);
         }
     }
 
@@ -40,7 +45,11 @@ class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Flight_ flight = mDataset.get(position);
-        holder.mTextView.setText(flight.getFlightNumber());
+        Context context = holder.mAircraft.getContext();
+
+        holder.mFlightNumber.setText(context.getString(R.string.flight_number, flight.getFlightNumber(), flight.getCarrier() != null ? flight.getCarrier().getCode() : "N/A"));
+        holder.mAircraft.setText(context.getString(R.string.aircraft, flight.getAircraft() != null ? flight.getAircraft().getRegistrationCode() : "N/A"));
+        holder.mRemainingFlightTime.setText(context.getString(R.string.remaining_time, flight.getRemainingFlyTime() != null ? flight.getRemainingFlyTime() : "N/A"));
     }
 
     @Override

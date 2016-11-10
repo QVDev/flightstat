@@ -97,6 +97,7 @@ public class FlightFragment extends BaseFragment implements View.OnClickListener
                         showFlights(response);
                     } else {
                         mLogView.setText(getString(R.string.response_error));
+                        showNoResult();
                     }
                 }
 

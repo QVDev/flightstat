@@ -77,6 +77,15 @@ public class BaseFragment extends Fragment {
         mFlightsAdapter.notifyDataSetChanged();
     }
 
+    protected void showNoResult() {
+        if (mFlights.isEmpty()) {
+            Flight_ flight = new Flight_();
+            flight.setFlightNumber(getString(R.string.no_flights_found));
+            mFlights.add(flight);
+            mFlightsAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -11,4 +11,8 @@
     <string name="flight_picker_error">Flight number is not set</string>
     <string name="departure_picker_error">Departure is not set</string>
     <string name="destination_picker_error">Destination is not set</string>
+    <string name="flight_number">Flight number: %1$s carrier:%2$s</string>
+    <string name="aircraft">Aircraft: %1$s</string>
+    <string name="remaining_time">Remaining fly time: %1$s</string>
+    <string name="no_flights_found">No results, try again</string>
 </resources>
